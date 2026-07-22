@@ -82,7 +82,7 @@
   .summary .cell .num.accent{color:var(--orange-0);}
   .summary .cell .lbl{color:var(--ink-2); font-size:13px; margin-top:6px;}
 
-  .cards{ padding:80px 5vw 40px; display:grid; grid-template-columns:repeat(2, 1fr); gap:28px; }
+  .cards{ padding:80px 5vw 40px; display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:28px; }
   .section-head{
     grid-column:1 / -1; display:flex; align-items:baseline; justify-content:space-between;
     margin-bottom:8px; flex-wrap:wrap; gap:10px;
@@ -93,6 +93,7 @@
   .card{
     display:flex; flex-direction:column; background:var(--card);
     border:1px solid var(--card-line); border-radius:22px; overflow:hidden; position:relative;
+    min-width:0;
   }
   .card.is-best{border-color:rgba(255,90,31,0.55);}
   .card.is-best::after{
@@ -105,7 +106,7 @@
 
   .msg-side{
     padding:34px 34px 30px; border-bottom:1px solid var(--card-line);
-    display:flex; flex-direction:column; gap:16px;
+    display:flex; flex-direction:column; gap:16px; min-width:0;
   }
   .msg-number{ display:flex; align-items:center; gap:12px; }
   .msg-number .idx{
@@ -267,7 +268,7 @@
   /* ===== inline embedded email (no iframe) ===== */
   .email-embed-wrap{
     background:#eaf0f6; border:1px solid var(--card-line); border-radius:16px;
-    overflow-x:auto; overflow-y:hidden;
+    overflow-x:auto; overflow-y:hidden; min-width:0; max-width:100%;
   }
   .email-embed, .email-embed *{ box-sizing:content-box; }
   .email-embed{
