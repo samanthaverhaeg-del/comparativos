@@ -136,6 +136,88 @@
     font-style:italic;
   }
 
+  /* Tela de bloqueio */
+  #lock-screen {
+    position:fixed;
+    inset:0;
+    background:#141517;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:1000;
+    padding:20px;
+  }
+  .lock-box {
+    width:100%;
+    max-width:340px;
+    text-align:center;
+  }
+  .lock-tail {
+    width:44px;
+    height:44px;
+    margin:0 auto 24px;
+    background:#FF4719;
+    transform:skewX(-18deg);
+    opacity:0.9;
+  }
+  .lock-title {
+    font-weight:300;
+    font-size:22px;
+    color:#FFFFFF;
+    margin-bottom:8px;
+  }
+  .lock-subtitle {
+    font-weight:400;
+    font-size:13px;
+    color:#7D8083;
+    margin-bottom:28px;
+  }
+  #lock-input {
+    width:100%;
+    background:#1B1C1F;
+    border:1px solid #2C2D30;
+    border-radius:8px;
+    padding:14px 16px;
+    font-family:'Lexend', Arial, Helvetica, sans-serif;
+    font-size:18px;
+    letter-spacing:4px;
+    text-align:center;
+    color:#FFFFFF;
+    outline:none;
+    margin-bottom:16px;
+  }
+  #lock-input:focus {
+    border-color:#FF4719;
+  }
+  #lock-submit {
+    width:100%;
+    background:#FF4719;
+    border:none;
+    border-radius:8px;
+    padding:14px 16px;
+    font-family:'Lexend', Arial, Helvetica, sans-serif;
+    font-weight:500;
+    font-size:14px;
+    letter-spacing:0.5px;
+    text-transform:uppercase;
+    color:#FFFFFF;
+    cursor:pointer;
+    transition:background 0.15s ease;
+  }
+  #lock-submit:hover {
+    background:#D13200;
+  }
+  #lock-error {
+    color:#FF4719;
+    font-size:13px;
+    margin-top:14px;
+    display:none;
+  }
+
+  #site-content {
+    display:none;
+  }
+
   @media (max-width: 640px) {
     .header { padding:40px 20px 28px; }
     .container { padding:24px 20px 60px; }
@@ -147,6 +229,19 @@
 </style>
 </head>
 <body>
+
+<div id="lock-screen">
+  <div class="lock-box">
+    <div class="lock-tail"></div>
+    <div class="lock-title">Comparativos</div>
+    <div class="lock-subtitle">Acesso restrito — digite a senha</div>
+    <input type="password" id="lock-input" maxlength="10" inputmode="numeric" placeholder="••••••" autofocus>
+    <button id="lock-submit">Entrar</button>
+    <div id="lock-error">Senha incorreta. Tente novamente.</div>
+  </div>
+</div>
+
+<div id="site-content">
 
 <div class="header">
   <svg class="header-accent" width="220" height="100%" viewBox="0 0 220 300" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
@@ -179,6 +274,46 @@
 
   </div>
 </div>
+
+</div>
+
+<script>
+  (function () {
+    var CORRECT_PIN = "478569";
+    var STORAGE_KEY = "comparativos_auth";
+
+    var lockScreen = document.getElementById("lock-screen");
+    var siteContent = document.getElementById("site-content");
+    var input = document.getElementById("lock-input");
+    var submit = document.getElementById("lock-submit");
+    var errorMsg = document.getElementById("lock-error");
+
+    function unlock() {
+      lockScreen.style.display = "none";
+      siteContent.style.display = "block";
+    }
+
+    function tryUnlock() {
+      if (input.value === CORRECT_PIN) {
+        localStorage.setItem(STORAGE_KEY, "true");
+        unlock();
+      } else {
+        errorMsg.style.display = "block";
+        input.value = "";
+        input.focus();
+      }
+    }
+
+    if (localStorage.getItem(STORAGE_KEY) === "true") {
+      unlock();
+    }
+
+    submit.addEventListener("click", tryUnlock);
+    input.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") tryUnlock();
+    });
+  })();
+</script>
 
 </body>
 </html>
