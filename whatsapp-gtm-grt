@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Qive · Resultados de Mensagens — Gestão da Reforma Tributária</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-0:#0d0d0f;
+    --bg-1:#17171a;
+    --card:#1d1d21;
+    --card-line: rgba(255,255,255,0.07);
+    --ink-0:#f5f5f4;
+    --ink-1:#b7b6c0;
+    --ink-2:#7d7c88;
+    --orange-0:#ff5a1f;
+    --orange-1:#ff8a3d;
+    --red-1:#e6320f;
+    --green:#3ddc84;
+    --whatsapp:#25d366;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(1100px 600px at 82% -8%, rgba(255,90,31,0.16), transparent 60%),
+      radial-gradient(900px 500px at -10% 15%, rgba(255,90,31,0.08), transparent 55%),
+      var(--bg-0);
+    color:var(--ink-0);
+    font-family:'Inter', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{
+    font-family:'Lexend', sans-serif;
+  }
+
+  /* ===== top bar ===== */
+  .topbar{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:22px 5vw;
+    border-bottom:1px solid var(--card-line);
+    background:rgba(13,13,15,0.7);
+    backdrop-filter:blur(10px);
+    position:sticky; top:0; z-index:20;
+  }
+  .logo{display:flex; align-items:center; gap:2px; font-family:'Lexend'; font-weight:700; font-size:22px; letter-spacing:-0.02em;}
+  .logo .q-dot{color:var(--orange-0);}
+  .topbar-tag{
+    font-size:12px; color:var(--ink-2); letter-spacing:0.08em; text-transform:uppercase;
+    border:1px solid var(--card-line); padding:6px 12px; border-radius:100px;
+  }
+
+  /* ===== hero ===== */
+  .hero{
+    padding:96px 5vw 64px;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero::before{
+    content:"";
+    position:absolute; top:-260px; right:-160px;
+    width:640px; height:640px;
+    background:conic-gradient(from 200deg, var(--orange-0), var(--red-1) 35%, transparent 60%);
+    filter:blur(90px);
+    opacity:0.35;
+    pointer-events:none;
+  }
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    font-size:13px; font-weight:600; color:var(--orange-1);
+    text-transform:uppercase; letter-spacing:0.12em;
+    margin-bottom:22px;
+  }
+  .eyebrow::before{content:"●"; font-size:8px; color:var(--orange-0);}
+  .hero h1{
+    font-size:clamp(34px, 5vw, 58px);
+    font-weight:700;
+    line-height:1.05;
+    letter-spacing:-0.02em;
+    max-width:820px;
+    margin:0 0 22px;
+  }
+  .hero h1 em{color:var(--orange-0); font-style:normal;}
+  .hero p{
+    max-width:620px;
+    color:var(--ink-1);
+    font-size:17px;
+    line-height:1.65;
+    margin:0;
+  }
+
+  /* ===== summary strip ===== */
+  .summary{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:1px;
+    background:var(--card-line);
+    border:1px solid var(--card-line);
+    border-radius:18px;
+    overflow:hidden;
+    margin:48px 5vw 0;
+  }
+  .summary .cell{
+    background:var(--bg-1);
+    padding:26px 28px;
+  }
+  .summary .cell .num{
+    font-family:'Lexend'; font-weight:700; font-size:30px; letter-spacing:-0.02em;
+  }
+  .summary .cell .num.accent{color:var(--orange-0);}
+  .summary .cell .lbl{color:var(--ink-2); font-size:13px; margin-top:6px;}
+
+  /* ===== cards section ===== */
+  .cards{
+    padding:80px 5vw 100px;
+    display:flex; flex-direction:column; gap:36px;
+  }
+  .section-head{
+    display:flex; align-items:baseline; justify-content:space-between;
+    margin-bottom:8px; flex-wrap:wrap; gap:10px;
+  }
+  .section-head h2{font-size:26px; font-weight:600; margin:0;}
+  .section-head span{color:var(--ink-2); font-size:14px;}
+
+  .card{
+    display:grid;
+    grid-template-columns:1.15fr 0.85fr;
+    background:var(--card);
+    border:1px solid var(--card-line);
+    border-radius:22px;
+    overflow:hidden;
+    position:relative;
+  }
+  .card.is-best{border-color:rgba(255,90,31,0.55);}
+  .card.is-best::after{
+    content:"MELHOR TAXA DE RESPOSTA";
+    position:absolute; top:0; right:0;
+    background:linear-gradient(120deg,var(--orange-0),var(--red-1));
+    color:#fff; font-family:'Lexend'; font-weight:600; font-size:11px;
+    letter-spacing:0.08em;
+    padding:8px 16px 8px 20px;
+    border-bottom-left-radius:14px;
+  }
+
+  .msg-side{
+    padding:38px 40px;
+    border-right:1px solid var(--card-line);
+    display:flex; flex-direction:column; gap:22px;
+  }
+  .msg-number{
+    display:flex; align-items:center; gap:12px;
+  }
+  .msg-number .idx{
+    font-family:'Lexend'; font-weight:700; font-size:15px;
+    width:34px; height:34px; border-radius:10px;
+    display:flex; align-items:center; justify-content:center;
+    background:rgba(255,90,31,0.12); color:var(--orange-1);
+    border:1px solid rgba(255,90,31,0.3);
+  }
+  .msg-number .name{font-family:'Lexend'; font-weight:600; font-size:14px; color:var(--ink-1); letter-spacing:0.02em; text-transform:uppercase;}
+
+  .bubble{
+    background:#141416;
+    border:1px solid var(--card-line);
+    border-radius:16px;
+    padding:20px 22px;
+    position:relative;
+  }
+  .bubble::before{
+    content:"";
+    position:absolute; left:-1px; top:22px;
+    width:14px; height:14px;
+    background:#141416;
+    border-left:1px solid var(--card-line);
+    border-bottom:1px solid var(--card-line);
+    transform:rotate(45deg) translateX(-1px);
+    border-radius:0 0 0 3px;
+  }
+  .bubble .headline{
+    font-weight:600; font-size:16.5px; line-height:1.4; margin:0 0 10px; color:var(--ink-0);
+  }
+  .bubble .body{
+    font-size:14.5px; line-height:1.65; color:var(--ink-1); margin:0 0 16px; white-space:pre-line;
+  }
+  .cta-chip{
+    display:inline-flex; align-items:center; gap:8px;
+    background:rgba(37,211,102,0.1);
+    border:1px solid rgba(37,211,102,0.35);
+    color:var(--whatsapp);
+    font-weight:600; font-size:13.5px;
+    padding:9px 16px; border-radius:100px;
+  }
+  .cta-chip::before{content:"↳"; font-size:14px;}
+
+  .channel-tag{
+    display:inline-flex; align-items:center; gap:6px; width:fit-content;
+    font-size:12px; color:var(--ink-2); font-weight:500;
+  }
+  .channel-tag .dot{width:7px; height:7px; border-radius:50%; background:var(--whatsapp);}
+
+  /* ===== results side ===== */
+  .results-side{
+    padding:38px 40px;
+    display:flex; flex-direction:column; justify-content:space-between; gap:24px;
+    background:
+      radial-gradient(360px 220px at 100% 0%, rgba(255,90,31,0.09), transparent 70%);
+  }
+  .results-title{font-size:12px; color:var(--ink-2); text-transform:uppercase; letter-spacing:0.1em; font-weight:600; margin:0 0 4px;}
+
+  .gauge-row{
+    display:flex; align-items:center; gap:24px;
+  }
+  .gauge{position:relative; width:112px; height:112px; flex-shrink:0;}
+  .gauge svg{transform:rotate(-90deg);}
+  .gauge .track{fill:none; stroke:rgba(255,255,255,0.08); stroke-width:9;}
+  .gauge .fill{fill:none; stroke-width:9; stroke-linecap:round; stroke:url(#gaugeGradient); transition:stroke-dashoffset 1s ease;}
+  .gauge .pct{
+    position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    flex-direction:column;
+  }
+  .gauge .pct b{font-family:'Lexend'; font-weight:700; font-size:22px;}
+  .gauge .pct span{font-size:10px; color:var(--ink-2); letter-spacing:0.04em;}
+
+  .stat-list{display:flex; flex-direction:column; gap:14px; flex:1;}
+  .stat-row{
+    display:flex; align-items:center; justify-content:space-between;
+    padding-bottom:14px; border-bottom:1px solid var(--card-line);
+  }
+  .stat-row:last-child{border-bottom:none; padding-bottom:0;}
+  .stat-row .label{font-size:13.5px; color:var(--ink-1);}
+  .stat-row .value{font-family:'Lexend'; font-weight:700; font-size:18px;}
+  .stat-row .value.orange{color:var(--orange-1);}
+
+  .rank-bar-wrap{margin-top:4px;}
+  .rank-bar-wrap .rlabel{display:flex; justify-content:space-between; font-size:12px; color:var(--ink-2); margin-bottom:6px;}
+  .rank-bar{height:7px; border-radius:100px; background:rgba(255,255,255,0.08); overflow:hidden;}
+  .rank-bar > div{height:100%; border-radius:100px; background:linear-gradient(90deg,var(--orange-0),var(--orange-1));}
+
+  /* ===== ranking / comparativo ===== */
+  .compare{
+    padding:0 5vw 100px;
+  }
+  .compare-card{
+    background:var(--card);
+    border:1px solid var(--card-line);
+    border-radius:22px;
+    padding:40px 44px;
+  }
+  .compare-card h2{font-size:24px; font-weight:600; margin:0 0 4px;}
+  .compare-card .sub{color:var(--ink-2); font-size:14px; margin:0 0 30px;}
+  .compare-row{
+    display:grid;
+    grid-template-columns:180px 1fr 90px;
+    align-items:center;
+    gap:20px;
+    padding:14px 0;
+    border-bottom:1px solid var(--card-line);
+  }
+  .compare-row:last-child{border-bottom:none;}
+  .compare-row .name{font-family:'Lexend'; font-weight:600; font-size:14.5px; color:var(--ink-0);}
+  .compare-row .name small{display:block; font-family:'Inter'; font-weight:400; color:var(--ink-2); font-size:12px; margin-top:2px;}
+  .compare-row .track{height:10px; border-radius:100px; background:rgba(255,255,255,0.06); position:relative; overflow:hidden;}
+  .compare-row .track > div{position:absolute; left:0; top:0; height:100%; border-radius:100px;}
+  .compare-row .value{font-family:'Lexend'; font-weight:700; font-size:16px; text-align:right;}
+
+  /* ===== footer note ===== */
+  .foot{
+    padding:34px 5vw 60px;
+    color:var(--ink-2);
+    font-size:12.5px;
+    border-top:1px solid var(--card-line);
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;
+  }
+
+  /* ===== second, independent test ===== */
+  .test-divider{
+    display:flex; align-items:center; gap:18px;
+    padding:0 5vw; margin:-40px 0 0;
+  }
+  .test-divider .line{flex:1; height:1px; background:var(--card-line);}
+  .test-divider .divider-label{
+    font-size:12px; color:var(--ink-2); text-transform:uppercase; letter-spacing:0.1em; font-weight:600;
+    white-space:nowrap;
+  }
+
+  .hero-2{padding-top:56px; padding-bottom:44px;}
+  .hero-2::before{display:none;}
+  .h1-2{font-size:clamp(26px, 3.4vw, 36px);}
+  .eyebrow-alt{color:#c78bff;}
+  .eyebrow-alt::before{color:#8a5cff;}
+
+  .idx-alt{
+    background:rgba(138,92,255,0.12); color:#c78bff; border-color:rgba(138,92,255,0.3);
+  }
+  .fill-alt{stroke:url(#gaugeGradientAlt);}
+  .rank-fill-alt{background:linear-gradient(90deg,#8a5cff,#c78bff);}
+
+  .card.is-best-alt{border-color:rgba(138,92,255,0.55);}
+  .card.is-best-alt::after{
+    content:"MELHOR TAXA DE RESPOSTA";
+    position:absolute; top:0; right:0;
+    background:linear-gradient(120deg,#8a5cff,#c78bff);
+    color:#fff; font-family:'Lexend'; font-weight:600; font-size:11px;
+    letter-spacing:0.08em;
+    padding:8px 16px 8px 20px;
+    border-bottom-left-radius:14px;
+  }
+  .cards-2 .results-side{
+    background:radial-gradient(360px 220px at 100% 0%, rgba(138,92,255,0.10), transparent 70%);
+  }
+  .compare-card-alt{border-color:rgba(138,92,255,0.3);}
+
+  @media (max-width: 860px){
+    .card{grid-template-columns:1fr;}
+    .msg-side{border-right:none; border-bottom:1px solid var(--card-line);}
+    .summary{grid-template-columns:repeat(2,1fr);}
+    .compare-row{grid-template-columns:120px 1fr 70px; gap:12px;}
+  }
+</style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="logo">Q<span class="q-dot">i</span>ve</div>
+    <div class="topbar-tag">Teste de Copy · WhatsApp</div>
+  </div>
+
+  <section class="hero">
+    <div class="eyebrow">Gestão da Reforma Tributária</div>
+    <h1>Teste de mensagens de <em>WhatsApp</em>: qual abordagem gera mais resposta?</h1>
+    <p>Quatro variações de mensagem foram enviadas para testar gancho, tom e argumento sobre crédito tributário na Reforma. Abaixo, cada mensagem completa está pareada com os resultados que gerou.</p>
+  </section>
+
+  <div class="summary">
+    <div class="cell">
+      <div class="num">2.131</div>
+      <div class="lbl">Total de entregues</div>
+    </div>
+    <div class="cell">
+      <div class="num">75</div>
+      <div class="lbl">Total de respostas</div>
+    </div>
+    <div class="cell">
+      <div class="num accent">6,33%</div>
+      <div class="lbl">Maior taxa de resposta (Mensagem 1)</div>
+    </div>
+    <div class="cell">
+      <div class="num">4</div>
+      <div class="lbl">Variações testadas</div>
+    </div>
+  </div>
+
+  <!-- gradient defs shared by all gauges -->
+  <svg width="0" height="0" style="position:absolute">
+    <defs>
+      <linearGradient id="gaugeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#ff5a1f"/>
+        <stop offset="100%" stop-color="#ff8a3d"/>
+      </linearGradient>
+      <linearGradient id="gaugeGradientAlt" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#8a5cff"/>
+        <stop offset="100%" stop-color="#c78bff"/>
+      </linearGradient>
+    </defs>
+  </svg>
+
+  <section class="cards">
+
+    <div class="section-head">
+      <h2>Mensagens e resultados</h2>
+      <span>Ordenadas conforme o envio original</span>
+    </div>
+
+    <!-- MENSAGEM 1 -->
+    <div class="card is-best">
+      <div class="msg-side">
+        <div class="msg-number">
+          <div class="idx">01</div>
+          <div class="name">Mensagem 1</div>
+        </div>
+        <span class="channel-tag"><span class="dot"></span>WhatsApp</span>
+        <div class="bubble">
+          <p class="headline">Quanto crédito tributário sua empresa tem?</p>
+          <p class="body">A Reforma Tributária já muda quanto crédito de IBS/CBS sua empresa consegue recuperar. Empresas que não acompanham isso correm risco de pagar mais imposto.
+
+Posso te mostrar como calcular esse número com dados reais da sua operação?</p>
+          <span class="cta-chip">Quero ver esse cálculo</span>
+        </div>
+      </div>
+      <div class="results-side">
+        <div>
+          <p class="results-title">Resultados</p>
+          <div class="gauge-row">
+            <div class="gauge">
+              <svg width="112" height="112" viewBox="0 0 112 112">
+                <circle class="track" cx="56" cy="56" r="48"></circle>
+                <circle class="fill" cx="56" cy="56" r="48" stroke-dasharray="301.6" stroke-dashoffset="282.5"></circle>
+              </svg>
+              <div class="pct"><b>6,33%</b><span>TAXA</span></div>
+            </div>
+            <div class="stat-list">
+              <div class="stat-row"><span class="label">Entregues</span><span class="value">158</span></div>
+              <div class="stat-row"><span class="label">Respostas</span><span class="value orange">10</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="rank-bar-wrap">
+          <div class="rlabel"><span>Vs. melhor taxa do teste</span><span>100%</span></div>
+          <div class="rank-bar"><div style="width:100%"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MENSAGEM 2 -->
+    <div class="card">
+      <div class="msg-side">
+        <div class="msg-number">
+          <div class="idx">02</div>
+          <div class="name">Mensagem 2</div>
+        </div>
+        <span class="channel-tag"><span class="dot"></span>WhatsApp</span>
+        <div class="bubble">
+          <p class="headline">Oi, tudo certo?</p>
+          <p class="body">Com a Reforma Tributária, fornecedor irregular ou XML incompleto pode custar crédito tributário para sua empresa.
+
+Quer entender quanto isso pode representar no seu caixa?</p>
+          <span class="cta-chip">Quero entender</span>
+        </div>
+      </div>
+      <div class="results-side">
+        <div>
+          <p class="results-title">Resultados</p>
+          <div class="gauge-row">
+            <div class="gauge">
+              <svg width="112" height="112" viewBox="0 0 112 112">
+                <circle class="track" cx="56" cy="56" r="48"></circle>
+                <circle class="fill" cx="56" cy="56" r="48" stroke-dasharray="301.6" stroke-dashoffset="288.4"></circle>
+              </svg>
+              <div class="pct"><b>4,40%</b><span>TAXA</span></div>
+            </div>
+            <div class="stat-list">
+              <div class="stat-row"><span class="label">Entregues</span><span class="value">159</span></div>
+              <div class="stat-row"><span class="label">Respostas</span><span class="value orange">7</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="rank-bar-wrap">
+          <div class="rlabel"><span>Vs. melhor taxa do teste</span><span>70%</span></div>
+          <div class="rank-bar"><div style="width:70%"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MENSAGEM 3 -->
+    <div class="card">
+      <div class="msg-side">
+        <div class="msg-number">
+          <div class="idx">03</div>
+          <div class="name">Mensagem 3</div>
+        </div>
+        <span class="channel-tag"><span class="dot"></span>WhatsApp</span>
+        <div class="bubble">
+          <p class="headline">Oi! Tudo certo?</p>
+          <p class="body">A Reforma Tributária já muda quanto crédito de IBS/CBS sua empresa consegue recuperar. Empresas que não acompanham isso correm risco de pagar mais imposto.
+
+Posso te mostrar como calcular esse número com dados reais da sua operação?</p>
+          <span class="cta-chip">Quero ver esse cálculo</span>
+        </div>
+      </div>
+      <div class="results-side">
+        <div>
+          <p class="results-title">Resultados</p>
+          <div class="gauge-row">
+            <div class="gauge">
+              <svg width="112" height="112" viewBox="0 0 112 112">
+                <circle class="track" cx="56" cy="56" r="48"></circle>
+                <circle class="fill" cx="56" cy="56" r="48" stroke-dasharray="301.6" stroke-dashoffset="286.4"></circle>
+              </svg>
+              <div class="pct"><b>4,84%</b><span>TAXA</span></div>
+            </div>
+            <div class="stat-list">
+              <div class="stat-row"><span class="label">Entregues</span><span class="value">889</span></div>
+              <div class="stat-row"><span class="label">Respostas</span><span class="value orange">43</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="rank-bar-wrap">
+          <div class="rlabel"><span>Vs. melhor taxa do teste</span><span>76%</span></div>
+          <div class="rank-bar"><div style="width:76%"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MENSAGEM 4 -->
+    <div class="card">
+      <div class="msg-side">
+        <div class="msg-number">
+          <div class="idx">04</div>
+          <div class="name">Mensagem 4</div>
+        </div>
+        <span class="channel-tag"><span class="dot"></span>WhatsApp</span>
+        <div class="bubble">
+          <p class="headline">Quanto crédito tributário sua empresa tem?</p>
+          <p class="body">Com a Reforma Tributária, fornecedor irregular ou XML incompleto pode custar crédito tributário para sua empresa.
+
+Quer entender quanto isso pode representar no seu caixa?</p>
+          <span class="cta-chip">Quero entender</span>
+        </div>
+      </div>
+      <div class="results-side">
+        <div>
+          <p class="results-title">Resultados</p>
+          <div class="gauge-row">
+            <div class="gauge">
+              <svg width="112" height="112" viewBox="0 0 112 112">
+                <circle class="track" cx="56" cy="56" r="48"></circle>
+                <circle class="fill" cx="56" cy="56" r="48" stroke-dasharray="301.6" stroke-dashoffset="296.9"></circle>
+              </svg>
+              <div class="pct"><b>1,62%</b><span>TAXA</span></div>
+            </div>
+            <div class="stat-list">
+              <div class="stat-row"><span class="label">Entregues</span><span class="value">925</span></div>
+              <div class="stat-row"><span class="label">Respostas</span><span class="value orange">15</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="rank-bar-wrap">
+          <div class="rlabel"><span>Vs. melhor taxa do teste</span><span>26%</span></div>
+          <div class="rank-bar"><div style="width:26%"></div></div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <section class="compare">
+    <div class="compare-card">
+      <h2>Comparativo de taxa de resposta</h2>
+      <p class="sub">As quatro variações lado a lado, ordenadas da maior para a menor taxa</p>
+
+      <div class="compare-row">
+        <div class="name">Mensagem 1 <small>158 entregues</small></div>
+        <div class="track"><div style="width:100%; background:linear-gradient(90deg,#ff5a1f,#ff8a3d);"></div></div>
+        <div class="value" style="color:var(--orange-1);">6,33%</div>
+      </div>
+      <div class="compare-row">
+        <div class="name">Mensagem 3 <small>889 entregues</small></div>
+        <div class="track"><div style="width:76%; background:rgba(255,138,61,0.75);"></div></div>
+        <div class="value">4,84%</div>
+      </div>
+      <div class="compare-row">
+        <div class="name">Mensagem 2 <small>159 entregues</small></div>
+        <div class="track"><div style="width:70%; background:rgba(255,138,61,0.55);"></div></div>
+        <div class="value">4,40%</div>
+      </div>
+      <div class="compare-row">
+        <div class="name">Mensagem 4 <small>925 entregues</small></div>
+        <div class="track"><div style="width:26%; background:rgba(255,138,61,0.3);"></div></div>
+        <div class="value">1,62%</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="test-divider">
+    <span class="line"></span>
+    <span class="divider-label">Novo teste · sem relação com o teste acima</span>
+    <span class="line"></span>
+  </div>
+
+  <section class="hero hero-2">
+    <div class="eyebrow eyebrow-alt">Panorama do Contas a Pagar</div>
+    <h1 class="h1-2">Segundo teste: mensagem sobre prazo B2B e risco de fornecedor</h1>
+    <p>Duas variações independentes, testando um gancho de dado de pesquisa (Panorama) contra um gancho direto de risco de crédito tributário.</p>
+  </section>
+
+  <section class="cards cards-2">
+
+    <!-- MENSAGEM 1 (teste 2) -->
+    <div class="card">
+      <div class="msg-side">
+        <div class="msg-number">
+          <div class="idx idx-alt">01</div>
+          <div class="name">Mensagem 1</div>
+        </div>
+        <span class="channel-tag"><span class="dot"></span>WhatsApp</span>
+        <div class="bubble">
+          <p class="headline">Oi! Tudo bem por aí?</p>
+          <p class="body">O nosso Panorama do Contas a Pagar mostrou que 76,8% das transações B2B no Brasil acontecem a prazo, movimentando R$ 4,07 trilhões entre 2023 e 2025.
+
+Fornecedor irregular nessas operações pode custar crédito tributário para sua empresa.
+
+Quer saber como mapear esse risco?</p>
+          <span class="cta-chip">Me mostre como</span>
+        </div>
+      </div>
+      <div class="results-side">
+        <div>
+          <p class="results-title">Resultados</p>
+          <div class="gauge-row">
+            <div class="gauge">
+              <svg width="112" height="112" viewBox="0 0 112 112">
+                <circle class="track" cx="56" cy="56" r="48"></circle>
+                <circle class="fill fill-alt" cx="56" cy="56" r="48" stroke-dasharray="301.6" stroke-dashoffset="299.4"></circle>
+              </svg>
+              <div class="pct"><b>0,72%</b><span>TAXA</span></div>
+            </div>
+            <div class="stat-list">
+              <div class="stat-row"><span class="label">Entregues</span><span class="value">139</span></div>
+              <div class="stat-row"><span class="label">Respostas</span><span class="value orange">1</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="rank-bar-wrap">
+          <div class="rlabel"><span>Vs. melhor taxa deste teste</span><span>26%</span></div>
+          <div class="rank-bar"><div class="rank-fill-alt" style="width:26%"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MENSAGEM 2 (teste 2) -->
+    <div class="card is-best-alt">
+      <div class="msg-side">
+        <div class="msg-number">
+          <div class="idx idx-alt">02</div>
+          <div class="name">Mensagem 2</div>
+        </div>
+        <span class="channel-tag"><span class="dot"></span>WhatsApp</span>
+        <div class="bubble">
+          <p class="headline">Esse detalhe pode te custar crédito tributário</p>
+          <p class="body">Comprar do fornecedor errado pode sair caro na Reforma Tributária, mesmo quando o preço parece menor.
+
+O crédito de IBS/CBS depende da conformidade de quem emite a nota.
+
+Posso te mostrar como identificar isso na sua relação com fornecedores?</p>
+          <span class="cta-chip">Me mostre como</span>
+        </div>
+      </div>
+      <div class="results-side">
+        <div>
+          <p class="results-title">Resultados</p>
+          <div class="gauge-row">
+            <div class="gauge">
+              <svg width="112" height="112" viewBox="0 0 112 112">
+                <circle class="track" cx="56" cy="56" r="48"></circle>
+                <circle class="fill fill-alt" cx="56" cy="56" r="48" stroke-dasharray="301.6" stroke-dashoffset="293.2"></circle>
+              </svg>
+              <div class="pct"><b>2,78%</b><span>TAXA</span></div>
+            </div>
+            <div class="stat-list">
+              <div class="stat-row"><span class="label">Entregues</span><span class="value">144</span></div>
+              <div class="stat-row"><span class="label">Respostas</span><span class="value orange">4</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="rank-bar-wrap">
+          <div class="rlabel"><span>Vs. melhor taxa deste teste</span><span>100%</span></div>
+          <div class="rank-bar"><div class="rank-fill-alt" style="width:100%"></div></div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <section class="compare compare-2">
+    <div class="compare-card compare-card-alt">
+      <h2>Comparativo de taxa de resposta</h2>
+      <p class="sub">Apenas as duas variações deste teste, lado a lado</p>
+
+      <div class="compare-row">
+        <div class="name">Mensagem 2 <small>144 entregues</small></div>
+        <div class="track"><div style="width:100%; background:linear-gradient(90deg,#8a5cff,#c78bff);"></div></div>
+        <div class="value" style="color:#c78bff;">2,78%</div>
+      </div>
+      <div class="compare-row">
+        <div class="name">Mensagem 1 <small>139 entregues</small></div>
+        <div class="track"><div style="width:26%; background:rgba(199,139,255,0.4);"></div></div>
+        <div class="value">0,72%</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="foot">
+    <span>Qive · Teste 1: Gestão da Reforma Tributária · Teste 2: Panorama do Contas a Pagar</span>
+    <span>Teste 1 — 2.131 entregues · 75 respostas &nbsp;|&nbsp; Teste 2 — 283 entregues · 5 respostas</span>
+  </div>
+
+</body>
+</html>
